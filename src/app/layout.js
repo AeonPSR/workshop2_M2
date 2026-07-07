@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import { AppProvider } from "@/context/AppContext";
 
 export const metadata = {
   title: "PAP",
@@ -21,7 +22,9 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <AppProvider>{children}</AppProvider>
+      </body>
     </html>
   );
 }

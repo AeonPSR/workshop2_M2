@@ -34,7 +34,10 @@ export const MobileMenu = () => {
     <Sheet>
       <SheetTrigger
         render={
-          <Button variant="ghost" className="lg:hidden text-foreground" />
+          <Button
+            variant="ghost"
+            className="lg:hidden text-foreground rounded-md"
+          />
         }
       >
         <HugeiconsIcon icon={Menu01Icon} size={18} />
@@ -58,7 +61,7 @@ export const MobileMenu = () => {
                   nativeButton={false}
                   className={cn(
                     "block py-2 text-sm text-foreground hover:text-accent",
-                    isActive && "text-accent"
+                    isActive && "text-accent",
                   )}
                 >
                   {item.label}

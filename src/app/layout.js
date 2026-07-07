@@ -1,4 +1,7 @@
 import "../styles/globals.css";
+import { Header } from "@/components/layout/Header";
+import { ProProvider } from "@/context/pro-context";
+import { Footer } from "@/components/layout/Footer";
 
 export const metadata = {
   title: "PAP",
@@ -21,7 +24,13 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full bg-background flex flex-col">
+        <ProProvider>
+          <Header />
+          <main className="min-h-screen">{children}</main>
+        </ProProvider>
+        <Footer />
+      </body>
     </html>
   );
 }

@@ -31,6 +31,18 @@
     "eslint-config-next": "16.2.10",
     "jest": "^30.0.0",
     "jest-environment-jsdom": "^30.0.0",
+    "prettier": "^3.9.4",
+    "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4"
+  },
+  "prettier": {
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ],
+    "tailwindFunctions": [
+      "cva",
+      "cn",
+      "clsx"
+    ]
   }
 }

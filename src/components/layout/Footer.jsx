@@ -24,7 +24,7 @@ export const Footer = () => {
   const pathname = usePathname();
 
   return (
-    <footer className="bg-foreground text-background/70 px-4 md:px-8 pb-10 pt-16 md:pt-24 mt-auto">
+    <footer className="text-background/70 bg-foreground  px-4 md:px-8 pb-10 pt-16 md:pt-24 mt-auto">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 max-w-7xl gap-10 w-full mx-auto">
         <div className="sm:col-span-2">
           <Image
@@ -55,7 +55,7 @@ export const Footer = () => {
                     href={item.href}
                     className={cn(
                       "text-sm hover:text-accent transition-colors",
-                      isActive && "text-accent"
+                      isActive && "text-accent",
                     )}
                   >
                     {item.label}
@@ -101,7 +101,7 @@ export const Footer = () => {
               href="/mentions-legales"
               className={cn(
                 "hover:text-accent transition-colors",
-                pathname === "/mentions-legales" && "text-accent"
+                pathname === "/mentions-legales" && "text-accent",
               )}
             >
               Mentions légales
@@ -112,7 +112,7 @@ export const Footer = () => {
               href="/cgv"
               className={cn(
                 "hover:text-accent transition-colors",
-                pathname === "/cgv" && "text-accent"
+                pathname === "/cgv" && "text-accent",
               )}
             >
               CGV
@@ -123,7 +123,7 @@ export const Footer = () => {
               href="/confidentialite"
               className={cn(
                 "hover:text-accent transition-colors",
-                pathname === "/confidentialite" && "text-accent"
+                pathname === "/confidentialite" && "text-accent",
               )}
             >
               Confidentialité

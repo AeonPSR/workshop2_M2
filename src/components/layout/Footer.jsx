@@ -24,22 +24,22 @@ export const Footer = () => {
   const pathname = usePathname();
 
   return (
-    <footer className="text-background/70 bg-foreground  px-4 md:px-8 pb-10 pt-16 md:pt-24 mt-auto">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 max-w-7xl gap-10 w-full mx-auto">
+    <footer className="bg-foreground text-background/70 mt-auto px-4 pt-16 pb-10 md:px-8 md:pt-24">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4">
         <div className="sm:col-span-2">
           <Image
             src={pap}
             alt="Plateforme des Artisans Producteurs"
-            className="max-w-40 h-auto"
+            className="h-auto max-w-40"
           />
 
-          <p className="text-sm max-w-md mt-2.5">
+          <p className="mt-2.5 max-w-md text-sm">
             La plateforme qui relie les artisans producteurs français aux
             clients exigeants.
           </p>
         </div>
         <div>
-          <h4 className="text-2xs tracking-wide-luxe text-accent uppercase mb-4">
+          <h4 className="text-2xs tracking-wide-luxe text-accent mb-4 uppercase">
             navigation
           </h4>
           <ul className="flex flex-col gap-2.5">
@@ -54,7 +54,7 @@ export const Footer = () => {
                   <Link
                     href={item.href}
                     className={cn(
-                      "text-sm hover:text-accent transition-colors",
+                      "hover:text-accent text-sm transition-colors",
                       isActive && "text-accent",
                     )}
                   >
@@ -66,7 +66,7 @@ export const Footer = () => {
           </ul>
         </div>
         <div>
-          <h4 className="text-2xs tracking-wide-luxe text-accent uppercase mb-4">
+          <h4 className="text-2xs tracking-wide-luxe text-accent mb-4 uppercase">
             contact
           </h4>
           <ul className="flex flex-col gap-2.5">
@@ -75,7 +75,7 @@ export const Footer = () => {
                 icon={Location01Icon}
                 size={18}
                 absoluteStrokeWidth
-                className="shrink-0 mt-0.5"
+                className="mt-0.5 shrink-0"
               />
               12 rue des Artisans, 75011 Paris
             </li>
@@ -90,7 +90,7 @@ export const Footer = () => {
           </ul>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto mt-16 md:mt-20 pt-8 border-t border-background/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-background/50 text-center">
+      <div className="border-background/10 text-background/50 mx-auto mt-16 flex max-w-7xl flex-col items-center justify-between gap-4 border-t pt-8 text-center text-xs md:mt-20 md:flex-row">
         <p>
           © 2026 PAP — Plateforme des Artisans Producteurs. Tous droits
           réservés.

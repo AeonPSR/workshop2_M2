@@ -1,7 +1,8 @@
 import "../styles/globals.css";
+import { AppProvider } from "@/context/AppContext";
 import { Header } from "@/components/layout/Header";
-import { ProProvider } from "@/context/pro-context";
 import { Footer } from "@/components/layout/Footer";
+import { ProProvider } from "@/context/pro-context";
 
 export const metadata = {
   title: "PAP",
@@ -27,7 +28,9 @@ export default function RootLayout({ children }) {
       <body className="min-h-full bg-background flex flex-col">
         <ProProvider>
           <Header />
-          <main className="min-h-screen">{children}</main>
+          <AppProvider>
+            <main className="min-h-screen">{children}</main>
+          </AppProvider>
         </ProProvider>
         <Footer />
       </body>

@@ -60,6 +60,7 @@
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
+  --bone: #f8f6f1;
 }
 
 .dark {
@@ -153,6 +154,7 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-bone: var(--bone);
 
   /* Fixed brand colors (do not flip with light/dark theme) */
   --color-bone: hsl(40 33% 96%);
@@ -163,6 +165,9 @@
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
   --font-heading: var(--font-heading);
+
+  --text-2xs: 0.625rem;
+  --text-2xs--line-height: 0.875rem;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -199,6 +204,12 @@
   }
   h2 {
     @apply font-bold text-2xl md:text-3xl;
+  }
+  .tracking-wide-luxe {
+    @apply tracking-[0.25em];
+  }
+  .tracking-luxe {
+    @apply tracking-[0.15em];
   }
 }
 

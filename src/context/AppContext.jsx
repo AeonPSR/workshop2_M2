@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
+import { useProStatus } from "@/context/pro-context";
 
 // TODO: replace this mock data layer with the real Odoo API integration.
 // The shape below is the contract the UI expects — keep it in sync with
@@ -68,7 +69,9 @@ const AppContext = createContext(null);
 export function AppProvider({ children }) {
   const [products] = useState(MOCK_PRODUCTS);
   const [producers] = useState(MOCK_PRODUCERS);
-  const [isPro] = useState(false);
+  // Source of truth for B2B/B2C is the header-controlled pro-context.
+  // TODO: pro-context's toggle will later be replaced by the real Odoo pipeline.
+  const { isPro } = useProStatus();
   const [cart, setCart] = useState([]);
 
   const getPrice = (product) =>

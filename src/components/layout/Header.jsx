@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 
 const menuItems = [
   { label: "Accueil", href: "/" },
-  { label: "Produits", href: "/products" },
+  { label: "Produits", href: "/catalogue" },
   { label: "Producteurs", href: "/producers" },
   { label: "Notre histoire", href: "/about" },
   { label: "Contact", href: "/contact" },

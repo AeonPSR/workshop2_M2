@@ -24,9 +24,16 @@ export async function decrypt(token) {
   }
 }
 
-export async function createSession({ uid, partnerId, isPro, name }) {
+export async function createSession({ uid, partnerId, isPro, name, pricelistId }) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  const session = await encrypt({ uid, partnerId, isPro, name, expiresAt });
+  const session = await encrypt({
+    uid,
+    partnerId,
+    isPro,
+    name,
+    pricelistId,
+    expiresAt,
+  });
 
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, session, {

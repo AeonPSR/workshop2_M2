@@ -29,8 +29,18 @@ export async function verifyOdooCredentials(login, password) {
 
   const [partner] = await odoo.execute_kw("res.partner", "read", [
     [partnerId],
-    ["is_company", "name"],
+    ["is_company", "name", "property_product_pricelist"],
   ]);
 
-  return { uid, partnerId, name: partner.name, isPro: partner.is_company };
+  const pricelistId = partner.property_product_pricelist
+    ? partner.property_product_pricelist[0]
+    : null;
+
+  return {
+    uid,
+    partnerId,
+    name: partner.name,
+    isPro: partner.is_company,
+    pricelistId,
+  };
 }

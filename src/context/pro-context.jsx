@@ -4,10 +4,15 @@ import * as React from "react";
 
 const ProContext = React.createContext(undefined);
 
-export function ProProvider({ children, initialIsPro = false, initialName = null }) {
+export function ProProvider({
+  children,
+  initialIsPro = false,
+  initialName = null,
+  initialPricelistId = null,
+}) {
   const value = React.useMemo(
-    () => ({ isPro: initialIsPro, name: initialName }),
-    [initialIsPro, initialName],
+    () => ({ isPro: initialIsPro, name: initialName, pricelistId: initialPricelistId }),
+    [initialIsPro, initialName, initialPricelistId],
   );
 
   return <ProContext.Provider value={value}>{children}</ProContext.Provider>;

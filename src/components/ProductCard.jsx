@@ -14,46 +14,74 @@ export const ProductCard = ({ product }) => {
   return (
     <div className="group relative flex flex-col">
       <Link href="#" className="block flex-1">
-        <div className={cn("image-zoom relative aspect-[3/4] bg-secondary overflow-hidden rounded-sm", outOfStock && "grayscale")}>
+        <div
+          className={cn(
+            "image-zoom bg-secondary relative aspect-3/4 overflow-hidden rounded-sm",
+            outOfStock && "grayscale",
+          )}
+        >
           {product.image_url ? (
             <Image
               src={product.image_url}
               alt={product.name}
               fill
               sizes="(min-width: 768px) 25vw, 50vw"
-              className={cn("object-cover transition-opacity", outOfStock && "opacity-20")}
+              className={cn(
+                "object-cover transition-opacity",
+                outOfStock && "opacity-20",
+              )}
             />
           ) : (
-            <div className={cn("w-full h-full bg-muted", outOfStock && "opacity-20")} />
+            <div
+              className={cn(
+                "bg-muted h-full w-full",
+                outOfStock && "opacity-20",
+              )}
+            />
           )}
           {outOfStock && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-accent font-heading text-2xs md:text-xs tracking-wide-luxe rotate-[-8deg] border border-accent px-3 py-1.5 bg-background/50 backdrop-blur-sm">
+              <span className="text-accent font-heading text-2xs tracking-wide-luxe border-accent bg-background/50 rotate-[-8deg] border px-3 py-1.5 backdrop-blur-sm md:text-xs">
                 RÉSERVE ÉPUISÉE
               </span>
             </div>
           )}
         </div>
 
-        <div className="mt-3 space-y-0.5 flex-1">
-          <p className="text-2xs tracking-wide-luxe text-muted-foreground uppercase">{product.category}</p>
-          <h3 className="font-heading font-semibold text-foreground text-base leading-tight group-hover:text-accent transition-colors">
+        <div className="mt-3 flex-1 space-y-0.5">
+          <p className="text-2xs tracking-wide-luxe text-muted-foreground uppercase">
+            {product.category}
+          </p>
+          <h3 className="font-heading text-foreground group-hover:text-accent text-base leading-tight font-semibold transition-colors">
             {product.name}
           </h3>
 
           {/* Stock — shown only in pro mode */}
           {isPro ? (
-            <div className="pt-0.5 space-y-0.5">
-              <p className={cn("text-xs font-medium", outOfStock || lowStock ? "text-destructive" : "text-muted-foreground")}>
-                {outOfStock ? "Stock épuisé" : `Stock : ${product.stock} unité${product.stock > 1 ? "s" : ""}`}
+            <div className="space-y-0.5 pt-0.5">
+              <p
+                className={cn(
+                  "text-xs font-medium",
+                  outOfStock || lowStock
+                    ? "text-destructive"
+                    : "text-muted-foreground",
+                )}
+              >
+                {outOfStock
+                  ? "Stock épuisé"
+                  : `Stock : ${product.stock} unité${product.stock > 1 ? "s" : ""}`}
               </p>
             </div>
           ) : (
-            <p className="text-xs text-muted-foreground pt-0.5">Vendu à l’unité</p>
+            <p className="text-muted-foreground pt-0.5 text-xs">
+              Vendu à l’unité
+            </p>
           )}
 
           <div className="flex items-baseline gap-2 pt-1.5">
-            <span className="font-heading text-lg font-bold text-foreground">{price.toFixed(2)}€</span>
+            <span className="font-heading text-foreground text-lg font-bold">
+              {price.toFixed(2)}€
+            </span>
             <span className="text-2xs text-muted-foreground">/ unité</span>
           </div>
         </div>
@@ -63,7 +91,7 @@ export const ProductCard = ({ product }) => {
         onClick={() => addToCart(product.id)}
         disabled={outOfStock}
         className={cn(
-          "mt-3 w-full py-2.5 text-2xs md:text-xs tracking-wide-luxe uppercase border transition-all ink-hover relative",
+          "text-2xs tracking-wide-luxe ink-hover relative mt-3 w-full border py-2.5 uppercase transition-all md:text-xs",
           outOfStock
             ? "border-border text-muted-foreground cursor-not-allowed opacity-50"
             : "border-foreground text-foreground hover:bg-foreground hover:text-background",

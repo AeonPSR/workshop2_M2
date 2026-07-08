@@ -4,12 +4,6 @@ import { getConnectedOdooClient } from "./odoo-client";
 
 const ODOO_URL = process.env.NEXT_PUBLIC_ODOO_URL;
 
-// Pricelist used for the "professionnel" (B2B) prices. The B2C "Particulier"
-// pricelist has no rules, so its price is simply the product's list_price.
-// TODO: when auth is wired, resolve the real pricelist from the logged-in
-// partner's `property_product_pricelist` instead of this fixed id.
-const B2B_PRICELIST_ID = 5; // "Revendeurs"
-
 // Odoo product categories that are internal/accounting, not real rayons.
 const INTERNAL_CATEGORIES = new Set([
   "Goods",
@@ -31,10 +25,11 @@ function imageUrl(model, id) {
 }
 
 /**
- * Live products from Odoo (`product.template`), with both B2C and B2B prices
- * resolved so the UI can switch on the pro toggle without refetching.
+ * Live products from Odoo (`product.template`). `price_pro` is resolved from
+ * the given pricelist (the logged-in partner's `property_product_pricelist`);
+ * pass `null` for anonymous/particulier visitors to skip that lookup.
  */
-export async function getProducts() {
+export async function getProducts(pricelistId) {
   const odoo = await getConnectedOdooClient();
 
   const products = await odoo.execute_kw("product.template", "search_read", [
@@ -47,20 +42,22 @@ export async function getProducts() {
     500,
   ]);
 
-  // Map product_tmpl_id -> fixed B2B price from the pricelist rules.
-  const rules = await odoo.execute_kw("product.pricelist.item", "search_read", [
-    [
-      ["pricelist_id", "=", B2B_PRICELIST_ID],
-      ["applied_on", "=", "1_product"],
-      ["compute_price", "=", "fixed"],
-    ],
-    ["product_tmpl_id", "fixed_price"],
-    0,
-    1000,
-  ]);
+  // Map product_tmpl_id -> fixed price from the partner's pricelist rules.
   const proPrice = {};
-  for (const r of rules) {
-    if (r.product_tmpl_id) proPrice[r.product_tmpl_id[0]] = r.fixed_price;
+  if (pricelistId) {
+    const rules = await odoo.execute_kw("product.pricelist.item", "search_read", [
+      [
+        ["pricelist_id", "=", pricelistId],
+        ["applied_on", "=", "1_product"],
+        ["compute_price", "=", "fixed"],
+      ],
+      ["product_tmpl_id", "fixed_price"],
+      0,
+      1000,
+    ]);
+    for (const r of rules) {
+      if (r.product_tmpl_id) proPrice[r.product_tmpl_id[0]] = r.fixed_price;
+    }
   }
 
   return products

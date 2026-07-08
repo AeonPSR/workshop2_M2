@@ -21,8 +21,8 @@ export async function POST(request) {
     const odoo = await getConnectedOdooClient();
 
     // Creates a CRM lead from the contact form.
-    // TODO: confirm the model ('crm.lead' requires the CRM module) and field
-    // names against the real Odoo instance once access is available.
+    // Verified against the live Odoo instance: crm.lead is accessible and the
+    // fields below (name/contact_name/email_from/description) all exist.
     const leadId = await odoo.execute_kw("crm.lead", "create", [
       {
         name: subject,

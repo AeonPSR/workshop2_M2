@@ -60,7 +60,6 @@
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
-  --bone: #f8f6f1;
 }
 
 .dark {
@@ -154,12 +153,6 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --color-bone: var(--bone);
-
-  /* Fixed brand colors (do not flip with light/dark theme) */
-  --color-bone: hsl(40 33% 96%);
-  --color-obsidian: hsl(0 0% 7%);
-  --color-gold: hsl(39 43% 46%);
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
@@ -214,18 +207,6 @@
 }
 
 @layer utilities {
-  .gold-rule {
-    border-color: var(--color-gold, hsl(39 43% 46% / 0.3));
-  }
-
-  .tracking-luxe {
-    letter-spacing: 0.15em;
-  }
-
-  .tracking-wide-luxe {
-    letter-spacing: 0.25em;
-  }
-
   .vertical-text {
     writing-mode: vertical-rl;
     text-orientation: mixed;
@@ -241,7 +222,7 @@
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: color-mix(in srgb, var(--color-gold) 8%, transparent);
+    background: color-mix(in srgb, var(--color-accent) 8%, transparent);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);

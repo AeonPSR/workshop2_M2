@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { useApp } from "@/context/AppContext";
 
-export default function ProductCard({ product }) {
+export const ProductCard = ({ product }) => {
   const { isPro, getPrice, addToCart } = useApp();
   const price = getPrice(product);
   const outOfStock = product.stock !== undefined && product.stock <= 0;
@@ -12,19 +14,21 @@ export default function ProductCard({ product }) {
   return (
     <div className="group relative flex flex-col">
       <Link href="#" className="block flex-1">
-        <div className={`image-zoom relative aspect-[3/4] bg-secondary overflow-hidden rounded-sm ${outOfStock ? "grayscale" : ""}`}>
+        <div className={cn("image-zoom relative aspect-[3/4] bg-secondary overflow-hidden rounded-sm", outOfStock && "grayscale")}>
           {product.image_url ? (
-            <img
+            <Image
               src={product.image_url}
               alt={product.name}
-              className={`w-full h-full object-cover transition-opacity ${outOfStock ? "opacity-20" : ""}`}
+              fill
+              sizes="(min-width: 768px) 25vw, 50vw"
+              className={cn("object-cover transition-opacity", outOfStock && "opacity-20")}
             />
           ) : (
-            <div className={`w-full h-full bg-muted ${outOfStock ? "opacity-20" : ""}`} />
+            <div className={cn("w-full h-full bg-muted", outOfStock && "opacity-20")} />
           )}
           {outOfStock && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-gold font-heading text-[10px] md:text-xs tracking-wide-luxe rotate-[-8deg] border border-gold px-3 py-1.5 bg-bone/50 backdrop-blur-sm">
+              <span className="text-accent font-heading text-2xs md:text-xs tracking-wide-luxe rotate-[-8deg] border border-accent px-3 py-1.5 bg-background/50 backdrop-blur-sm">
                 RÉSERVE ÉPUISÉE
               </span>
             </div>
@@ -32,8 +36,8 @@ export default function ProductCard({ product }) {
         </div>
 
         <div className="mt-3 space-y-0.5 flex-1">
-          <p className="text-[10px] tracking-wide-luxe text-muted-foreground uppercase">{product.category}</p>
-          <h3 className="font-heading font-semibold text-obsidian text-base leading-tight group-hover:text-gold transition-colors">
+          <p className="text-2xs tracking-wide-luxe text-muted-foreground uppercase">{product.category}</p>
+          <h3 className="font-heading font-semibold text-foreground text-base leading-tight group-hover:text-accent transition-colors">
             {product.name}
           </h3>
 
@@ -43,7 +47,7 @@ export default function ProductCard({ product }) {
               {product.conditionnement && (
                 <p className="text-xs text-muted-foreground">{product.conditionnement}</p>
               )}
-              <p className={`text-xs font-medium ${outOfStock ? "text-destructive" : lowStock ? "text-destructive" : "text-muted-foreground"}`}>
+              <p className={cn("text-xs font-medium", outOfStock || lowStock ? "text-destructive" : "text-muted-foreground")}>
                 {outOfStock ? "Stock épuisé" : `Stock : ${product.stock} unité${product.stock > 1 ? "s" : ""}`}
               </p>
             </div>
@@ -52,11 +56,11 @@ export default function ProductCard({ product }) {
           )}
 
           <div className="flex items-baseline gap-2 pt-1.5">
-            <span className="font-heading text-lg font-bold text-obsidian">{price.toFixed(2)}€</span>
+            <span className="font-heading text-lg font-bold text-foreground">{price.toFixed(2)}€</span>
             {isPro && product.unites_par_carton ? (
-              <span className="text-[10px] text-muted-foreground">/ carton de {product.unites_par_carton}</span>
+              <span className="text-2xs text-muted-foreground">/ carton de {product.unites_par_carton}</span>
             ) : (
-              <span className="text-[10px] text-muted-foreground">/ unité</span>
+              <span className="text-2xs text-muted-foreground">/ unité</span>
             )}
           </div>
         </div>
@@ -65,14 +69,15 @@ export default function ProductCard({ product }) {
       <button
         onClick={() => addToCart(product.id)}
         disabled={outOfStock}
-        className={`mt-3 w-full py-2.5 text-[10px] md:text-xs tracking-wide-luxe uppercase border transition-all ink-hover relative ${
+        className={cn(
+          "mt-3 w-full py-2.5 text-2xs md:text-xs tracking-wide-luxe uppercase border transition-all ink-hover relative",
           outOfStock
             ? "border-border text-muted-foreground cursor-not-allowed opacity-50"
-            : "border-obsidian text-obsidian hover:bg-obsidian hover:text-bone"
-        }`}
+            : "border-foreground text-foreground hover:bg-foreground hover:text-background",
+        )}
       >
         {outOfStock ? "Indisponible" : "Ajouter au panier"}
       </button>
     </div>
   );
-}
+};

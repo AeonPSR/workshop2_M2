@@ -22,7 +22,11 @@ const INTERNAL_CATEGORIES = new Set([
 ]);
 
 function imageUrl(model, id) {
-  // Odoo serves a placeholder for records without an image, so this never 404s.
+  if (model === "product.template") {
+    // Route through our authenticated proxy so Odoo serves the real image.
+    return `/api/product-image/${id}`;
+  }
+  // Partners (producers) are still served directly — confirmed public.
   return `${ODOO_URL}/web/image/${model}/${id}/image_512`;
 }
 
@@ -37,11 +41,10 @@ export async function getProducts() {
     [
       ["sale_ok", "=", true],
       ["list_price", ">", 0],
-      ["categ_id", "!=", false],
     ],
-    ["id", "name", "list_price", "categ_id", "qty_available"],
+    ["id", "name", "list_price", "categ_id", "qty_available", "image_512"],
     0,
-    100,
+    500,
   ]);
 
   // Map product_tmpl_id -> fixed B2B price from the pricelist rules.
@@ -61,16 +64,28 @@ export async function getProducts() {
   }
 
   return products
-    .filter((p) => !INTERNAL_CATEGORIES.has(p.categ_id[1]))
+    .filter((p) => !p.categ_id || !INTERNAL_CATEGORIES.has(p.categ_id[1]))
     .map((p) => ({
       id: p.id,
       name: p.name,
-      category: p.categ_id[1],
-      image_url: imageUrl("product.template", p.id),
+      category: p.categ_id ? p.categ_id[1] : null,
+      // Odoo always returns a base64 placeholder (~8104 chars) even without a
+      // real image. Only treat it as a real image if the data is substantially
+      // larger than the placeholder.
+      image_url:
+        typeof p.image_512 === "string" && p.image_512.length > 8200
+          ? `/api/product-image/${p.id}`
+          : null,
       price_particulier: p.list_price,
       price_pro: proPrice[p.id] ?? p.list_price,
       stock: p.qty_available,
-    }));
+    }))
+    .sort((a, b) => {
+      const aIn = a.stock > 0 ? 0 : 1;
+      const bIn = b.stock > 0 ? 0 : 1;
+      if (aIn !== bIn) return aIn - bIn;
+      return a.name.localeCompare(b.name, "fr");
+    });
 }
 
 /** Live rayon names from Odoo (`product.category`), internal ones removed. */

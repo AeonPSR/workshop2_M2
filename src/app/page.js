@@ -14,13 +14,24 @@ import {
   Award01Icon,
 } from "@hugeicons/core-free-icons";
 import { useApp } from "@/context/AppContext";
-import { IMAGES } from "@/lib/constants";
+import { IMAGES, CATEGORY_FALLBACK_IMAGES } from "@/lib/constants";
 import { ProductCard } from "@/components/ProductCard";
 
 export default function Home() {
   const { products, producers, categories, getPrice } = useApp();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+
+  // Map each category to the first product image available for that category.
+  const categoryImage = useMemo(() => {
+    const map = {};
+    for (const p of products) {
+      if (p.category && p.image_url && !map[p.category]) {
+        map[p.category] = p.image_url;
+      }
+    }
+    return map;
+  }, [products]);
 
   const featuredProducts = useMemo(() => {
     // No "featured" flag in Odoo — show a random selection.
@@ -175,11 +186,22 @@ export default function Home() {
           {categories.map((cat, i) => (
             <Link
               key={cat}
-              href="#"
-              className="group relative aspect-square bg-secondary/30 rounded-sm border border-border hover:border-accent transition-all p-5 md:p-6 flex flex-col justify-end ink-hover"
+              href={`/catalogue?category=${encodeURIComponent(cat)}`}
+              className="group relative aspect-square bg-secondary/30 rounded-sm border border-border hover:border-accent transition-all overflow-hidden flex flex-col justify-end ink-hover"
             >
-              <span className="absolute top-3 right-3 text-2xs text-muted-foreground font-mono">0{i + 1}</span>
-              <h3 className="font-heading font-semibold text-foreground group-hover:text-accent transition-colors text-sm md:text-base leading-tight">{cat}</h3>
+              {categoryImage[cat] || CATEGORY_FALLBACK_IMAGES[cat] ? (
+                <Image
+                  src={categoryImage[cat] || CATEGORY_FALLBACK_IMAGES[cat]}
+                  alt={cat}
+                  fill
+                  sizes="(min-width: 768px) 20vw, 50vw"
+                  className="object-cover object-center opacity-40 group-hover:opacity-60 transition-opacity"
+                />
+              ) : null}
+              <div className="relative z-10 p-5 md:p-6">
+                <span className="absolute top-3 right-3 text-2xs text-muted-foreground font-mono">0{i + 1}</span>
+                <h3 className="font-heading font-semibold text-foreground group-hover:text-accent transition-colors text-sm md:text-base leading-tight">{cat}</h3>
+              </div>
             </Link>
           ))}
         </div>

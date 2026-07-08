@@ -46,3 +46,6 @@ dummy/
 cypress/videos/
 cypress/screenshots/
 cypress/downloads/
+
+# misc
+/doc

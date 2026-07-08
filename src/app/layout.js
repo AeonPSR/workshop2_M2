@@ -4,6 +4,7 @@ import { AppProvider } from "@/context/AppContext";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ProProvider } from "@/context/pro-context";
+import { verifySession } from "@/lib/dal";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,14 +24,19 @@ export const metadata = {
   icon: "/favicon.ico",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await verifySession();
+
   return (
     <html
       lang="en"
       className={`${inter.variable} ${syne.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-background flex flex-col">
-        <ProProvider>
+        <ProProvider
+          initialIsPro={session?.isPro ?? false}
+          initialName={session?.name ?? null}
+        >
           <Header />
           <AppProvider>
             <main className="min-h-screen">{children}</main>

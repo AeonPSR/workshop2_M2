@@ -37,11 +37,10 @@ export async function getProducts() {
     [
       ["sale_ok", "=", true],
       ["list_price", ">", 0],
-      ["categ_id", "!=", false],
     ],
     ["id", "name", "list_price", "categ_id", "qty_available"],
     0,
-    100,
+    500,
   ]);
 
   // Map product_tmpl_id -> fixed B2B price from the pricelist rules.
@@ -61,11 +60,11 @@ export async function getProducts() {
   }
 
   return products
-    .filter((p) => !INTERNAL_CATEGORIES.has(p.categ_id[1]))
+    .filter((p) => !p.categ_id || !INTERNAL_CATEGORIES.has(p.categ_id[1]))
     .map((p) => ({
       id: p.id,
       name: p.name,
-      category: p.categ_id[1],
+      category: p.categ_id ? p.categ_id[1] : null,
       image_url: imageUrl("product.template", p.id),
       price_particulier: p.list_price,
       price_pro: proPrice[p.id] ?? p.list_price,

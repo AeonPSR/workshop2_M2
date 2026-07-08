@@ -10,6 +10,8 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-foreground hover:bg-accent border-foreground hover:border-accent text-primary px-4 py-2 text-sm tracking-wide",
+        accent:
+          "bg-accent hover:opacity-80 text-primary px-4 py-2 text-sm tracking-wide",
         outline:
           "border-foreground hover:bg-foreground hover:text-background aria-expanded:bg-muted aria-expanded:text-foreground dark:bg-input/30 px-4 py-2 text-sm tracking-widest",
         secondary:

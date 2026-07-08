@@ -34,8 +34,9 @@ export default function Home() {
   }, [products]);
 
   const featuredProducts = useMemo(() => {
-    // No "featured" flag in Odoo — show a random selection.
-    return [...products].sort(() => Math.random() - 0.5).slice(0, 4);
+    const ideal = products.filter((p) => p.stock > 0 && p.image_url);
+    const pool = ideal.length >= 4 ? ideal : products;
+    return [...pool].sort(() => Math.random() - 0.5).slice(0, 4);
   }, [products]);
 
   useEffect(() => {
@@ -142,11 +143,11 @@ export default function Home() {
             )}
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="#" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-foreground text-background text-sm tracking-wide hover:bg-accent transition-colors ink-hover relative">
+              <Link href="/catalogue" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-foreground text-background text-sm tracking-wide hover:bg-accent transition-colors ink-hover relative">
                 Découvrir le catalogue
                 <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
               </Link>
-              <Link href="#" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 border border-foreground text-foreground text-sm tracking-wide hover:bg-foreground hover:text-background transition-colors">
+              <Link href="/producers" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 border border-foreground text-foreground text-sm tracking-wide hover:bg-foreground hover:text-background transition-colors">
                 Nos producteurs
               </Link>
             </div>
@@ -218,7 +219,7 @@ export default function Home() {
             <p className="text-background/60 leading-relaxed mb-6">
               PAP est née d’une conviction simple : les meilleurs produits méritent les meilleurs circuits de distribution. Nous travaillons main dans la main avec des artisans producteurs d’exception pour porter leurs créations jusqu’aux enseignes et particuliers les plus exigeants.
             </p>
-            <Link href="#" className="inline-flex items-center gap-2 text-accent text-sm tracking-wide hover:gap-3 transition-all">
+            <Link href="/contact" className="inline-flex items-center gap-2 text-accent text-sm tracking-wide hover:gap-3 transition-all">
               Découvrir notre histoire
               <HugeiconsIcon icon={ArrowRight01Icon} className="w-4 h-4" />
             </Link>
@@ -244,13 +245,13 @@ export default function Home() {
               <p className="text-2xs tracking-wide-luxe text-accent uppercase mb-2">Producteurs</p>
               <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground">Nos artisans</h2>
             </div>
-            <Link href="#" className="text-sm text-accent tracking-wide hover:underline underline-offset-4 hidden md:block">
+            <Link href="/catalogue" className="text-sm text-accent tracking-wide hover:underline underline-offset-4 hidden md:block">
               Voir tous →
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {featuredProducers.map((producer) => (
-              <Link key={producer.id} href="#" className="group">
+              <Link key={producer.id} href="/producers" className="group">
                 <div className="image-zoom relative aspect-[3/4] rounded-sm overflow-hidden mb-3">
                   {producer.image_url ? (
                     <Image src={producer.image_url} alt={producer.name} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
@@ -277,7 +278,7 @@ export default function Home() {
               <p className="text-2xs tracking-wide-luxe text-accent uppercase mb-2">Sélection</p>
               <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground">Nos produits</h2>
             </div>
-            <Link href="#" className="text-sm text-accent tracking-wide hover:underline underline-offset-4 hidden md:block">
+            <Link href="/catalogue" className="text-sm text-accent tracking-wide hover:underline underline-offset-4 hidden md:block">
               Tout le catalogue →
             </Link>
           </div>

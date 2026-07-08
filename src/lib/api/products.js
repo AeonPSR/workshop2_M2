@@ -69,13 +69,7 @@ export async function getProducts() {
       id: p.id,
       name: p.name,
       category: p.categ_id ? p.categ_id[1] : null,
-      // Odoo always returns a base64 placeholder (~8104 chars) even without a
-      // real image. Only treat it as a real image if the data is substantially
-      // larger than the placeholder.
-      image_url:
-        typeof p.image_512 === "string" && p.image_512.length > 8200
-          ? `/api/product-image/${p.id}`
-          : null,
+      image_url: p.image_512 ? `/api/product-image/${p.id}` : null,
       price_particulier: p.list_price,
       price_pro: proPrice[p.id] ?? p.list_price,
       stock: p.qty_available,

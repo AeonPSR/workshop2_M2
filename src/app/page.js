@@ -14,24 +14,26 @@ import {
   Award01Icon,
 } from "@hugeicons/core-free-icons";
 import { useApp } from "@/context/AppContext";
-import { CATEGORIES, IMAGES } from "@/lib/constants";
+import { IMAGES } from "@/lib/constants";
 import { ProductCard } from "@/components/ProductCard";
 
 export default function Home() {
-  const { products, producers } = useApp();
+  const { products, producers, categories, getPrice } = useApp();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const featuredProducts = useMemo(() => {
-    return products.filter((p) => p.featured);
+    // No "featured" flag in Odoo — show a random selection.
+    return [...products].sort(() => Math.random() - 0.5).slice(0, 4);
   }, [products]);
 
   useEffect(() => {
-    if (featuredProducts.length <= 1) return;
+    if (featuredProducts.length <= 1 || isPaused) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % featuredProducts.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [featuredProducts.length]);
+  }, [featuredProducts.length, isPaused]);
 
   const featuredProducers = producers.slice(0, 3);
   const newProducts = products.slice(0, 8);
@@ -71,7 +73,11 @@ export default function Home() {
 
             {/* Featured carousel */}
             {featuredProducts.length > 0 && (
-              <div className="mb-8 max-w-md border border-accent/40 rounded-sm p-4 bg-accent/5">
+              <div
+                className="mb-8 max-w-md border border-accent/40 rounded-sm p-4 bg-accent/5"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+              >
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-2xs tracking-wide-luxe text-accent uppercase whitespace-nowrap font-semibold">◆ Produit phare</span>
                   <div className="flex-1 h-px bg-accent/30" />
@@ -102,7 +108,7 @@ export default function Home() {
                           <div className="flex-1 min-w-0">
                             <p className="text-2xs tracking-wide text-muted-foreground uppercase truncate">{product.category}</p>
                             <h3 className="font-heading font-bold text-foreground group-hover:text-accent transition-colors text-lg md:text-xl leading-tight">{product.name}</h3>
-                            <p className="text-lg text-accent font-heading font-bold mt-2">Dès {product.price_particulier?.toFixed(2)}€</p>
+                            <p className="text-lg text-accent font-heading font-bold mt-2">Dès {getPrice(product)?.toFixed(2)}€</p>
                             <span className="inline-flex items-center gap-1 text-xs text-foreground mt-2 group-hover:gap-2 transition-all">
                               Découvrir <HugeiconsIcon icon={ArrowRight01Icon} className="w-3.5 h-3.5" />
                             </span>
@@ -166,7 +172,7 @@ export default function Home() {
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground">Explorez par catégorie</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
-          {CATEGORIES.map((cat, i) => (
+          {categories.map((cat, i) => (
             <Link
               key={cat}
               href="#"

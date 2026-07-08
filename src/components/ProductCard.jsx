@@ -41,12 +41,9 @@ export const ProductCard = ({ product }) => {
             {product.name}
           </h3>
 
-          {/* Conditionnement / Stock — differs by profile */}
+          {/* Stock — shown only in pro mode */}
           {isPro ? (
             <div className="pt-0.5 space-y-0.5">
-              {product.conditionnement && (
-                <p className="text-xs text-muted-foreground">{product.conditionnement}</p>
-              )}
               <p className={cn("text-xs font-medium", outOfStock || lowStock ? "text-destructive" : "text-muted-foreground")}>
                 {outOfStock ? "Stock épuisé" : `Stock : ${product.stock} unité${product.stock > 1 ? "s" : ""}`}
               </p>
@@ -57,11 +54,7 @@ export const ProductCard = ({ product }) => {
 
           <div className="flex items-baseline gap-2 pt-1.5">
             <span className="font-heading text-lg font-bold text-foreground">{price.toFixed(2)}€</span>
-            {isPro && product.unites_par_carton ? (
-              <span className="text-2xs text-muted-foreground">/ carton de {product.unites_par_carton}</span>
-            ) : (
-              <span className="text-2xs text-muted-foreground">/ unité</span>
-            )}
+            <span className="text-2xs text-muted-foreground">/ unité</span>
           </div>
         </div>
       </Link>

@@ -23,8 +23,9 @@ export default function Home() {
   const [isPaused, setIsPaused] = useState(false);
 
   const featuredProducts = useMemo(() => {
-    // No "featured" flag in Odoo — show a random selection.
-    return [...products].sort(() => Math.random() - 0.5).slice(0, 4);
+    const ideal = products.filter((p) => p.stock > 0 && p.image_url);
+    const pool = ideal.length >= 4 ? ideal : products;
+    return [...pool].sort(() => Math.random() - 0.5).slice(0, 4);
   }, [products]);
 
   useEffect(() => {

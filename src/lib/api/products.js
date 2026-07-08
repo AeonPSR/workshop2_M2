@@ -22,7 +22,11 @@ const INTERNAL_CATEGORIES = new Set([
 ]);
 
 function imageUrl(model, id) {
-  // Odoo serves a placeholder for records without an image, so this never 404s.
+  if (model === "product.template") {
+    // Route through our authenticated proxy so Odoo serves the real image.
+    return `/api/product-image/${id}`;
+  }
+  // Partners (producers) are still served directly — confirmed public.
   return `${ODOO_URL}/web/image/${model}/${id}/image_512`;
 }
 
@@ -38,7 +42,7 @@ export async function getProducts() {
       ["sale_ok", "=", true],
       ["list_price", ">", 0],
     ],
-    ["id", "name", "list_price", "categ_id", "qty_available"],
+    ["id", "name", "list_price", "categ_id", "qty_available", "image_512"],
     0,
     500,
   ]);
@@ -65,11 +69,17 @@ export async function getProducts() {
       id: p.id,
       name: p.name,
       category: p.categ_id ? p.categ_id[1] : null,
-      image_url: imageUrl("product.template", p.id),
+      image_url: p.image_512 ? `/api/product-image/${p.id}` : null,
       price_particulier: p.list_price,
       price_pro: proPrice[p.id] ?? p.list_price,
       stock: p.qty_available,
-    }));
+    }))
+    .sort((a, b) => {
+      const aIn = a.stock > 0 ? 0 : 1;
+      const bIn = b.stock > 0 ? 0 : 1;
+      if (aIn !== bIn) return aIn - bIn;
+      return a.name.localeCompare(b.name, "fr");
+    });
 }
 
 /** Live rayon names from Odoo (`product.category`), internal ones removed. */

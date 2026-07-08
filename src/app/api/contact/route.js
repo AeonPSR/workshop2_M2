@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getConnectedOdooClient } from "@/lib/api/odoo-client";
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { validateContactInput } from "@/lib/contact";
 
 export async function POST(request) {
   let body;
@@ -11,24 +10,12 @@ export async function POST(request) {
     return NextResponse.json({ error: "Requête invalide." }, { status: 400 });
   }
 
-  const name = String(body?.name ?? "").trim();
-  const email = String(body?.email ?? "").trim();
-  const subject = String(body?.subject ?? "").trim();
-  const message = String(body?.message ?? "").trim();
-
   // Boundary validation (do not trust the client).
-  if (!name || !email || !subject || !message) {
-    return NextResponse.json(
-      { error: "Tous les champs sont requis." },
-      { status: 400 },
-    );
+  const result = validateContactInput(body);
+  if (!result.valid) {
+    return NextResponse.json({ error: result.error }, { status: 400 });
   }
-  if (!EMAIL_RE.test(email)) {
-    return NextResponse.json(
-      { error: "Adresse email invalide." },
-      { status: 400 },
-    );
-  }
+  const { name, email, subject, message } = result.data;
 
   try {
     const odoo = await getConnectedOdooClient();

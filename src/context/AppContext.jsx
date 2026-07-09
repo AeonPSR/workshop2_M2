@@ -12,7 +12,7 @@ const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
   // Source of truth for B2B/B2C is the header-controlled pro-context.
-  const { isPro } = useProStatus();
+  const { isPro, pricelistId } = useProStatus();
 
   const [products, setProducts] = useState([]);
   const [producers, setProducers] = useState([]);
@@ -26,7 +26,7 @@ export function AppProvider({ children }) {
     async function load() {
       try {
         const [prods, cats, producs] = await Promise.all([
-          getProducts(),
+          getProducts(pricelistId),
           getCategories(),
           getFeaturedProducers(),
         ]);
@@ -45,7 +45,7 @@ export function AppProvider({ children }) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [pricelistId]);
 
   const getPrice = (product) =>
     isPro

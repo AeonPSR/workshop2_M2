@@ -1,11 +1,8 @@
 // Logique panier pure, séparée d'AppContext pour être testable sans rendre
 // de composant React. `cart` est toujours un tableau de { id: productId, qty }.
 
-export function getPrice(product, isPro) {
-  return isPro
-    ? (product.price_pro ?? product.price_particulier)
-    : product.price_particulier;
-}
+// Prix résolu selon le profil (B2B/B2C) — source unique dans lib/pricing.
+export { getPrice } from "./pricing";
 
 export function addItem(cart, products, productId, qty = 1) {
   const product = products.find((p) => p.id === productId);

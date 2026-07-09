@@ -1,19 +1,15 @@
 "use server";
 
 import { getConnectedOdooClient } from "./odoo-client";
+import { sortByAvailability } from "@/lib/product-utils";
+import {
+  buildProPriceMap,
+  isRealCategory,
+  mapProduct,
+  toRayonNames,
+} from "@/lib/odoo-mapping";
 
 const ODOO_URL = process.env.NEXT_PUBLIC_ODOO_URL;
-
-// Odoo product categories that are internal/accounting, not real rayons.
-const INTERNAL_CATEGORIES = new Set([
-  "Goods",
-  "Services",
-  "Expenses",
-  "Deliveries",
-  "Food",
-  "All",
-  "Saleable",
-]);
 
 function imageUrl(model, id) {
   if (model === "product.template") {
@@ -43,7 +39,7 @@ export async function getProducts(pricelistId) {
   ]);
 
   // Map product_tmpl_id -> fixed price from the partner's pricelist rules.
-  const proPrice = {};
+  let proPrice = {};
   if (pricelistId) {
     const rules = await odoo.execute_kw("product.pricelist.item", "search_read", [
       [
@@ -55,28 +51,12 @@ export async function getProducts(pricelistId) {
       0,
       1000,
     ]);
-    for (const r of rules) {
-      if (r.product_tmpl_id) proPrice[r.product_tmpl_id[0]] = r.fixed_price;
-    }
+    proPrice = buildProPriceMap(rules);
   }
 
-  return products
-    .filter((p) => !p.categ_id || !INTERNAL_CATEGORIES.has(p.categ_id[1]))
-    .map((p) => ({
-      id: p.id,
-      name: p.name,
-      category: p.categ_id ? p.categ_id[1] : null,
-      image_url: p.image_512 ? `/api/product-image/${p.id}` : null,
-      price_particulier: p.list_price,
-      price_pro: proPrice[p.id] ?? p.list_price,
-      stock: p.qty_available,
-    }))
-    .sort((a, b) => {
-      const aIn = a.stock > 0 ? 0 : 1;
-      const bIn = b.stock > 0 ? 0 : 1;
-      if (aIn !== bIn) return aIn - bIn;
-      return a.name.localeCompare(b.name, "fr");
-    });
+  return sortByAvailability(
+    products.filter(isRealCategory).map((p) => mapProduct(p, proPrice)),
+  );
 }
 
 /** Live rayon names from Odoo (`product.category`), internal ones removed. */
@@ -88,11 +68,7 @@ export async function getCategories() {
     0,
     100,
   ]);
-  return [
-    ...new Set(
-      cats.map((c) => c.name).filter((n) => !INTERNAL_CATEGORIES.has(n)),
-    ),
-  ];
+  return toRayonNames(cats);
 }
 
 /** Live producers for the homepage preview (`res.partner` companies). */

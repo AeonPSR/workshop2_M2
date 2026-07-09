@@ -1,4 +1,9 @@
-import { toISODate, nextPickupDates, isValidPickupDate } from "@/lib/pickup";
+import {
+  toISODate,
+  nextPickupDates,
+  isValidPickupDate,
+  formatPickupDate,
+} from "@/lib/pickup";
 
 // Force un décalage UTC positif (Paris) pour que le test round-trip
 // ci-dessous exerce vraiment le bug qu'il surveille : un formatage de date
@@ -82,5 +87,29 @@ describe("isValidPickupDate", () => {
 
   it("rejects an empty/undefined value", () => {
     expect(isValidPickupDate(undefined, reference)).toBe(false);
+  });
+});
+
+describe("toISODate", () => {
+  it("formats a date from its local components", () => {
+    expect(toISODate(new Date(2026, 6, 13))).toBe("2026-07-13");
+  });
+
+  it("zero-pads month and day", () => {
+    expect(toISODate(new Date(2026, 0, 5))).toBe("2026-01-05");
+  });
+
+  it("does not shift to the previous day under a positive UTC offset", () => {
+    // TZ is Europe/Paris here; a naive toISOString() would yield 2026-07-12.
+    expect(toISODate(new Date(2026, 6, 13))).toBe("2026-07-13");
+  });
+});
+
+describe("formatPickupDate", () => {
+  it("renders a French long date", () => {
+    const formatted = formatPickupDate(new Date(2026, 6, 13)); // Monday 13 July
+    expect(formatted).toContain("13");
+    expect(formatted).toContain("juillet");
+    expect(formatted).toContain("lundi");
   });
 });

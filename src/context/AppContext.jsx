@@ -2,13 +2,13 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { useProStatus } from "@/context/pro-context";
+import { getPrice as resolvePrice } from "@/lib/pricing";
 import {
   getProducts,
   getCategories,
   getFeaturedProducers,
 } from "@/lib/api/products";
 import {
-  getPrice as getPriceFor,
   addItem,
   removeItem,
   setItemQty,
@@ -82,7 +82,7 @@ export function AppProvider({ children }) {
     };
   }, [pricelistId]);
 
-  const getPrice = (product) => getPriceFor(product, isPro);
+  const getPrice = (product) => resolvePrice(product, isPro);
 
   const addToCart = (productId, qty = 1) => {
     setCart((current) => addItem(current, products, productId, qty));

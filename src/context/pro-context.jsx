@@ -9,10 +9,16 @@ export function ProProvider({
   initialIsPro = false,
   initialName = null,
   initialPricelistId = null,
+  initialIsConnected = false,
 }) {
   const value = React.useMemo(
-    () => ({ isPro: initialIsPro, name: initialName, pricelistId: initialPricelistId }),
-    [initialIsPro, initialName, initialPricelistId],
+    () => ({
+      isPro: initialIsPro,
+      name: initialName,
+      pricelistId: initialPricelistId,
+      isConnected: initialIsConnected,
+    }),
+    [initialIsPro, initialName, initialPricelistId, initialIsConnected],
   );
 
   return <ProContext.Provider value={value}>{children}</ProContext.Provider>;

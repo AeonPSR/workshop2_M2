@@ -137,7 +137,7 @@ export default function Home() {
                     {featuredProducts.map((product) => (
                       <div key={product.id} className="min-w-full">
                         <Link
-                          href="#"
+                          href={`/product/${product.id}`}
                           className="group flex items-center gap-5"
                         >
                           <div className="image-zoom bg-secondary ring-accent/20 relative h-28 w-28 shrink-0 overflow-hidden rounded-sm ring-1 md:h-36 md:w-36">
@@ -297,11 +297,12 @@ export default function Home() {
               de la passion du terroir
             </h2>
             <p className="text-background/60 mb-6 leading-relaxed">
-              PAP est née d’une conviction simple : les meilleurs produits
-              méritent les meilleurs circuits de distribution. Nous travaillons
-              main dans la main avec des artisans producteurs d’exception pour
-              porter leurs créations jusqu’aux enseignes et particuliers les
-              plus exigeants.
+              <span className="text-accent italic">Comptoir artisan</span>
+              est né d'une conviction simple : les meilleurs produits méritent
+              les meilleurs circuits de distribution. Nous travaillons main dans
+              la main avec des artisans producteurs d'exception pour porter
+              leurs créations jusqu'aux enseignes et particuliers les plus
+              exigeants.
             </p>
             <Link
               href="/contact"
@@ -337,7 +338,7 @@ export default function Home() {
               </h2>
             </div>
             <Link
-              href="/catalogue"
+              href="/producers"
               className="text-accent hidden text-sm tracking-wide underline-offset-4 hover:underline md:block"
             >
               Voir tous →

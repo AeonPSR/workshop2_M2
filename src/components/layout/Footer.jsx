@@ -99,7 +99,7 @@ export const Footer = () => {
         <ul className="flex flex-wrap items-center justify-center gap-4">
           <li>
             <Link
-              href="/mentions-legales"
+              href="#"
               className={cn(
                 "hover:text-accent transition-colors",
                 pathname === "/mentions-legales" && "text-accent",
@@ -110,7 +110,7 @@ export const Footer = () => {
           </li>
           <li>
             <Link
-              href="/cgv"
+              href="#"
               className={cn(
                 "hover:text-accent transition-colors",
                 pathname === "/cgv" && "text-accent",
@@ -121,7 +121,7 @@ export const Footer = () => {
           </li>
           <li>
             <Link
-              href="/confidentialite"
+              href="#"
               className={cn(
                 "hover:text-accent transition-colors",
                 pathname === "/confidentialite" && "text-accent",

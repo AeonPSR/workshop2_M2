@@ -37,6 +37,7 @@ export default async function RootLayout({ children }) {
           initialIsPro={session?.isPro ?? false}
           initialName={session?.name ?? null}
           initialPricelistId={session?.pricelistId ?? null}
+          initialIsConnected={!!session}
         >
           <AppProvider>
             <Header />

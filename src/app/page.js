@@ -137,7 +137,7 @@ export default function Home() {
                     {featuredProducts.map((product) => (
                       <div key={product.id} className="min-w-full">
                         <Link
-                          href="#"
+                          href={`/product/${product.id}`}
                           className="group flex items-center gap-5"
                         >
                           <div className="image-zoom bg-secondary ring-accent/20 relative h-28 w-28 shrink-0 overflow-hidden rounded-sm ring-1 md:h-36 md:w-36">
@@ -337,7 +337,7 @@ export default function Home() {
               </h2>
             </div>
             <Link
-              href="/catalogue"
+              href="/producers"
               className="text-accent hidden text-sm tracking-wide underline-offset-4 hover:underline md:block"
             >
               Voir tous →

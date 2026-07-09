@@ -17,7 +17,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 const INITIAL = { name: "", email: "", subject: "", message: "" };
-const LABEL_CLASS = "text-2xs tracking-wide-luxe text-muted-foreground uppercase";
+const LABEL_CLASS =
+  "text-2xs tracking-wide-luxe text-muted-foreground uppercase";
 
 export default function Contact() {
   const [formData, setFormData] = useState(INITIAL);
@@ -56,24 +57,31 @@ export default function Contact() {
   return (
     <div>
       {/* Header */}
-      <div className="border-b border-accent/30">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
-          <p className="text-2xs tracking-wide-luxe text-accent uppercase mb-2">Contact</p>
-          <h1 className="font-heading font-bold text-3xl md:text-5xl text-foreground">Parlons ensemble</h1>
+      <div className="border-accent/30 border-b">
+        <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-12">
+          <p className="text-2xs tracking-wide-luxe text-accent mb-2 uppercase">
+            Contact
+          </p>
+          <h1 className="font-heading text-foreground text-3xl font-bold md:text-5xl">
+            Parlons ensemble
+          </h1>
           <p className="text-muted-foreground mt-3 max-w-2xl">
-            Une question, une demande de partenariat, une envie de découvrir nos producteurs ? Écrivez-nous.
+            Une question, une demande de partenariat, une envie de découvrir nos
+            producteurs ? Écrivez-nous.
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 md:py-12">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Form */}
           <div className="lg:col-span-2">
             <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div className="space-y-1">
-                  <Label htmlFor="name" className={LABEL_CLASS}>Nom complet</Label>
+                  <Label htmlFor="name" className={LABEL_CLASS}>
+                    Nom complet
+                  </Label>
                   <Input
                     id="name"
                     type="text"
@@ -83,7 +91,9 @@ export default function Contact() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <Label htmlFor="email" className={LABEL_CLASS}>Email</Label>
+                  <Label htmlFor="email" className={LABEL_CLASS}>
+                    Email
+                  </Label>
                   <Input
                     id="email"
                     type="email"
@@ -94,7 +104,9 @@ export default function Contact() {
                 </div>
               </div>
               <div className="space-y-1">
-                <Label htmlFor="subject" className={LABEL_CLASS}>Sujet</Label>
+                <Label htmlFor="subject" className={LABEL_CLASS}>
+                  Sujet
+                </Label>
                 <Input
                   id="subject"
                   type="text"
@@ -104,7 +116,9 @@ export default function Contact() {
                 />
               </div>
               <div className="space-y-1">
-                <Label htmlFor="message" className={LABEL_CLASS}>Message</Label>
+                <Label htmlFor="message" className={LABEL_CLASS}>
+                  Message
+                </Label>
                 <Textarea
                   id="message"
                   required
@@ -115,15 +129,16 @@ export default function Contact() {
               </div>
 
               {status === "error" && (
-                <p className="text-sm text-destructive">{errorMsg}</p>
+                <p className="text-destructive text-sm">{errorMsg}</p>
               )}
 
               <Button
                 type="submit"
                 disabled={sending || sent}
                 className={cn(
-                  "tracking-wide-luxe uppercase ink-hover relative",
-                  sent && "bg-green-700 border-green-700 text-white hover:bg-green-700",
+                  "tracking-wide-luxe ink-hover relative uppercase",
+                  sent &&
+                    "border-green-700 bg-green-700 text-white hover:bg-green-700",
                 )}
               >
                 {sent ? (
@@ -142,46 +157,78 @@ export default function Contact() {
           </div>
 
           {/* Contact info */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="space-y-6 lg:col-span-1">
             <div className="bg-secondary/30 rounded-sm p-6">
-              <h3 className="font-heading font-bold text-foreground mb-4">Coordonnées</h3>
+              <h3 className="font-heading text-foreground mb-4 font-bold">
+                Coordonnées
+              </h3>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-                    <HugeiconsIcon icon={Mail01Icon} size={16} className="text-accent" />
+                  <div className="bg-accent/10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full">
+                    <HugeiconsIcon
+                      icon={Mail01Icon}
+                      size={16}
+                      className="text-accent"
+                    />
                   </div>
                   <div>
-                    <p className="text-2xs tracking-wide text-muted-foreground uppercase">Email</p>
-                    <p className="text-sm text-foreground">contact@pap-france.fr</p>
+                    <p className="text-2xs text-muted-foreground tracking-wide uppercase">
+                      Email
+                    </p>
+                    <p className="text-foreground text-sm">
+                      contact@pap-france.fr
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-                    <HugeiconsIcon icon={Call02Icon} size={16} className="text-accent" />
+                  <div className="bg-accent/10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full">
+                    <HugeiconsIcon
+                      icon={Call02Icon}
+                      size={16}
+                      className="text-accent"
+                    />
                   </div>
                   <div>
-                    <p className="text-2xs tracking-wide text-muted-foreground uppercase">Téléphone</p>
-                    <p className="text-sm text-foreground">04 75 00 00 00</p>
+                    <p className="text-2xs text-muted-foreground tracking-wide uppercase">
+                      Téléphone
+                    </p>
+                    <p className="text-foreground text-sm">04 75 00 00 00</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-                    <HugeiconsIcon icon={Location01Icon} size={16} className="text-accent" />
+                  <div className="bg-accent/10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full">
+                    <HugeiconsIcon
+                      icon={Location01Icon}
+                      size={16}
+                      className="text-accent"
+                    />
                   </div>
                   <div>
-                    <p className="text-2xs tracking-wide text-muted-foreground uppercase">Adresse</p>
-                    <p className="text-sm text-foreground">Z.A. Artisanale<br />26000 Valence</p>
+                    <p className="text-2xs text-muted-foreground tracking-wide uppercase">
+                      Adresse
+                    </p>
+                    <p className="text-foreground text-sm">
+                      Z.A. Artisanale
+                      <br />
+                      26000 Valence
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="bg-foreground text-background rounded-sm p-6">
-              <h3 className="font-heading font-bold text-background mb-2">Espace professionnel</h3>
-              <p className="text-sm text-background/60 mb-4">
-                Comptes pro créés en back-office. Tarifs dédiés, stocks en temps réel, livraison franco.
+              <h3 className="font-heading text-background mb-2 font-bold">
+                Espace professionnel
+              </h3>
+              <p className="text-background/60 mb-4 text-sm">
+                Comptes pro créés en back-office. Tarifs dédiés, stocks en temps
+                réel, livraison franco.
               </p>
-              <Link href="/pro" className="text-accent text-sm tracking-wide hover:underline underline-offset-4">
+              <Link
+                href="/login?type=pro"
+                className="text-accent text-sm tracking-wide underline-offset-4 hover:underline"
+              >
                 Accéder à l’espace pro →
               </Link>
             </div>

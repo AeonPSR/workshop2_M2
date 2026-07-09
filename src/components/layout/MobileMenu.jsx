@@ -6,6 +6,8 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Menu01Icon, Logout01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useProStatus } from "@/context/pro-context";
+import { logout } from "@/app/actions/auth";
 import {
   Sheet,
   SheetTrigger,
@@ -18,17 +20,15 @@ import {
 
 const menuItems = [
   { label: "Accueil", href: "/" },
-  { label: "Produits", href: "/products" },
+  { label: "Produits", href: "/catalogue" },
   { label: "Producteurs", href: "/producers" },
   { label: "Notre histoire", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
 
-// TODO: remplacer par la vraie logique d'authentification
-const isConnected = true;
-
 export const MobileMenu = () => {
   const pathname = usePathname();
+  const { isConnected } = useProStatus();
 
   return (
     <Sheet>
@@ -36,7 +36,7 @@ export const MobileMenu = () => {
         render={
           <Button
             variant="ghost"
-            className="lg:hidden text-foreground rounded-md"
+            className="text-foreground rounded-md lg:hidden"
           />
         }
       >
@@ -60,7 +60,7 @@ export const MobileMenu = () => {
                   render={<Link href={item.href} />}
                   nativeButton={false}
                   className={cn(
-                    "block py-2 text-sm text-foreground hover:text-accent",
+                    "text-foreground hover:text-accent block py-2 text-sm",
                     isActive && "text-accent",
                   )}
                 >
@@ -72,17 +72,20 @@ export const MobileMenu = () => {
         </ul>
         {isConnected && (
           <SheetFooter>
-            <SheetClose
-              render={
-                <Button
-                  variant="ghost"
-                  className="w-full hover:text-accent gap-2 transition"
-                />
-              }
-            >
-              Déconnexion
-              <HugeiconsIcon icon={Logout01Icon} size={18} />
-            </SheetClose>
+            <form action={logout} className="w-full">
+              <SheetClose
+                render={
+                  <Button
+                    type="submit"
+                    variant="ghost"
+                    className="hover:text-accent w-full gap-2 transition"
+                  />
+                }
+              >
+                Déconnexion
+                <HugeiconsIcon icon={Logout01Icon} size={18} />
+              </SheetClose>
+            </form>
           </SheetFooter>
         )}
       </SheetContent>

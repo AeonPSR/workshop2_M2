@@ -27,27 +27,27 @@ export const Header = () => {
   return (
     <>
       <ProBanner />
-      <header className="sticky top-0 z-40 backdrop-blur-md border-b border-accent/50 bg-background/70">
-        <nav className="max-w-7xl mx-auto px-4 md:px-8 py-3 flex items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-3 shrink-0">
-            <div className="overflow-hidden bg-foreground flex items-center justify-center ring-1 ring-accent/20">
+      <header className="border-accent/50 bg-background/90 sticky top-0 z-40 border-b backdrop-blur-md">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-8">
+          <Link href="/" className="flex shrink-0 items-center gap-3">
+            <div className="bg-foreground ring-accent/20 flex items-center justify-center overflow-hidden ring-1">
               <Image
                 src={pap}
                 alt="Plateforme des Artisans Producteurs"
-                className="max-w-24 h-auto"
+                className="h-auto max-w-24"
               />
             </div>
             <div className="hidden sm:block">
-              <div className="font-heading font-bold text-foreground text-lg leading-none">
-                Plateforme
+              <div className="font-heading text-foreground text-lg leading-none font-bold">
+                Comptoir
               </div>
-              <div className="text-2xs tracking-wide-luxe text-muted-foreground uppercase mt-0.5">
-                Artisans Producteurs
+              <div className="text-2xs tracking-wide-luxe text-muted-foreground mt-0.5 uppercase">
+                artisan
               </div>
             </div>
           </Link>
           <Searchbar />
-          <ul className="hidden lg:flex items-center gap-4">
+          <ul className="hidden items-center gap-4 lg:flex">
             {menuItems.map((item) => {
               const isActive =
                 item.href === "/"
@@ -59,7 +59,7 @@ export const Header = () => {
                   <Link
                     href={item.href}
                     className={cn(
-                      "text-sm text-foreground hover:text-accent text-nowrap",
+                      "text-foreground hover:text-accent text-sm text-nowrap",
                       isActive && "text-accent",
                     )}
                   >
@@ -72,11 +72,11 @@ export const Header = () => {
           <div className="flex space-x-2">
             <Link
               href="/cart"
-              className="relative flex items-center gap-1 text-sm text-foreground transition hover:text-accent"
+              className="text-foreground hover:text-accent relative flex items-center gap-1 text-sm transition"
             >
               <HugeiconsIcon icon={ShoppingBasket03Icon} />
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-background">
+                <span className="bg-accent text-background absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold">
                   {cartCount}
                 </span>
               )}

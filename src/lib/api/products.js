@@ -9,7 +9,7 @@ import {
   toRayonNames,
 } from "@/lib/odoo-mapping";
 
-const ODOO_URL = process.env.NEXT_PUBLIC_ODOO_URL;
+const ODOO_URL = process.env.ODOO_URL || process.env.NEXT_PUBLIC_ODOO_URL;
 
 function imageUrl(model, id) {
   if (model === "product.template") {

@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
-const odooHost = process.env.NEXT_PUBLIC_ODOO_URL
-  ? new URL(process.env.NEXT_PUBLIC_ODOO_URL).hostname
-  : undefined;
+const odooUrl = process.env.ODOO_URL || process.env.NEXT_PUBLIC_ODOO_URL;
+const odooHost = odooUrl ? new URL(odooUrl).hostname : undefined;
 
 const nextConfig = {
   images: {

@@ -5,7 +5,7 @@ import { getConnectedOdooClient } from "@/lib/api/odoo-client";
 
 export async function verifyOdooCredentials(login, password) {
   const client = new Odoo({
-    url: process.env.NEXT_PUBLIC_ODOO_URL,
+    url: process.env.ODOO_URL || process.env.NEXT_PUBLIC_ODOO_URL,
     db: process.env.ODOO_DB,
     username: login,
     password,

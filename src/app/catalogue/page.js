@@ -9,6 +9,7 @@ import {
   MultiplicationSignIcon,
 } from "@hugeicons/core-free-icons";
 import { cn } from "@/lib/utils";
+import { filterProducts } from "@/lib/product-utils";
 import { useApp } from "@/context/AppContext";
 import { ProductCard } from "@/components/ProductCard";
 import { Input } from "@/components/ui/input";
@@ -31,7 +32,7 @@ export default function Catalogue() {
 }
 
 function CatalogueInner() {
-  const { products = [], categories = [], isPro, getPrice } = useApp();
+  const { products = [], categories = [], isPro } = useApp();
   const searchParams = useSearchParams();
 
   const [search, setSearch] = useState(searchParams.get("q") || "");
@@ -48,34 +49,17 @@ function CatalogueInner() {
     if (cat) setSelectedCategories([cat]);
   }, [searchParams]);
 
-  const filteredProducts = useMemo(() => {
-    let result = [...products];
-
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      result = result.filter(
-        (p) =>
-          p.name?.toLowerCase().includes(q) ||
-          p.category?.toLowerCase().includes(q),
-      );
-    }
-
-    if (selectedCategories.length > 0) {
-      result = result.filter((p) => selectedCategories.includes(p.category));
-    }
-
-    if (showInStockOnly && isPro) {
-      result = result.filter((p) => p.stock > 0);
-    }
-
-    if (sortBy === "price-asc") {
-      result.sort((a, b) => getPrice(a) - getPrice(b));
-    } else if (sortBy === "price-desc") {
-      result.sort((a, b) => getPrice(b) - getPrice(a));
-    }
-
-    return result;
-  }, [products, search, selectedCategories, showInStockOnly, sortBy, getPrice]);
+  const filteredProducts = useMemo(
+    () =>
+      filterProducts(products, {
+        search,
+        categories: selectedCategories,
+        inStockOnly: showInStockOnly,
+        sortBy,
+        isPro,
+      }),
+    [products, search, selectedCategories, showInStockOnly, sortBy, isPro],
+  );
 
   const toggleCategory = (cat) => {
     setSelectedCategories((prev) =>

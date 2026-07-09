@@ -1,6 +1,7 @@
 "use server";
 
 import { getConnectedOdooClient } from "./odoo-client";
+import { sortByAvailability } from "@/lib/product-utils";
 
 const ODOO_URL = process.env.NEXT_PUBLIC_ODOO_URL;
 
@@ -63,23 +64,19 @@ export async function getProducts() {
     if (r.product_tmpl_id) proPrice[r.product_tmpl_id[0]] = r.fixed_price;
   }
 
-  return products
-    .filter((p) => !p.categ_id || !INTERNAL_CATEGORIES.has(p.categ_id[1]))
-    .map((p) => ({
-      id: p.id,
-      name: p.name,
-      category: p.categ_id ? p.categ_id[1] : null,
-      image_url: p.image_512 ? `/api/product-image/${p.id}` : null,
-      price_particulier: p.list_price,
-      price_pro: proPrice[p.id] ?? p.list_price,
-      stock: p.qty_available,
-    }))
-    .sort((a, b) => {
-      const aIn = a.stock > 0 ? 0 : 1;
-      const bIn = b.stock > 0 ? 0 : 1;
-      if (aIn !== bIn) return aIn - bIn;
-      return a.name.localeCompare(b.name, "fr");
-    });
+  return sortByAvailability(
+    products
+      .filter((p) => !p.categ_id || !INTERNAL_CATEGORIES.has(p.categ_id[1]))
+      .map((p) => ({
+        id: p.id,
+        name: p.name,
+        category: p.categ_id ? p.categ_id[1] : null,
+        image_url: p.image_512 ? `/api/product-image/${p.id}` : null,
+        price_particulier: p.list_price,
+        price_pro: proPrice[p.id] ?? p.list_price,
+        stock: p.qty_available,
+      })),
+  );
 }
 
 /** Live rayon names from Odoo (`product.category`), internal ones removed. */

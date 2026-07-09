@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { useProStatus } from "@/context/pro-context";
+import { getPrice as resolvePrice } from "@/lib/pricing";
 import {
   getProducts,
   getCategories,
@@ -47,10 +48,7 @@ export function AppProvider({ children }) {
     };
   }, []);
 
-  const getPrice = (product) =>
-    isPro
-      ? (product.price_pro ?? product.price_particulier)
-      : product.price_particulier;
+  const getPrice = (product) => resolvePrice(product, isPro);
 
   const addToCart = (productId) => {
     // TODO: wire to real cart/Odoo order logic.

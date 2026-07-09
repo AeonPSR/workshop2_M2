@@ -44,3 +44,34 @@ export async function verifyOdooCredentials(login, password) {
     pricelistId,
   };
 }
+
+/**
+ * Crée un nouveau compte Odoo pour un particulier (jamais une entreprise).
+ * Retourne le même format que `verifyOdooCredentials`, ou
+ * `{ error: "duplicate" }` si l'email est déjà utilisé.
+ */
+export async function createOdooAccount({ name, email, password }) {
+  const odoo = await getConnectedOdooClient();
+
+  const existing = await odoo.execute_kw("res.partner", "search", [
+    [["email", "=", email]],
+  ]);
+  if (existing.length > 0) {
+    return { error: "duplicate" };
+  }
+
+  // Le partenaire créé automatiquement par res.users est déjà un particulier
+  // (is_company: false) par défaut — pas besoin de le forcer ici. On laisse
+  // aussi Odoo assigner le groupe par défaut (le nom du champ groups_id
+  // varie selon la version d'Odoo).
+  await odoo.execute_kw("res.users", "create", [
+    {
+      name,
+      login: email,
+      email,
+      password,
+    },
+  ]);
+
+  return verifyOdooCredentials(email, password);
+}

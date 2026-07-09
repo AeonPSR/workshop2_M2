@@ -13,7 +13,7 @@ export const ProductCard = ({ product }) => {
 
   return (
     <div className="group relative flex flex-col">
-      <Link href="#" className="block flex-1">
+      <Link href={`catalogue/${product.id}`} className="block flex-1">
         <div
           className={cn(
             "image-zoom bg-secondary relative aspect-3/4 overflow-hidden rounded-sm",

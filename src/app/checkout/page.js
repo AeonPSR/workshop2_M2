@@ -359,7 +359,7 @@ export default function CheckoutPage() {
 
           {/* Summary */}
           <aside className="shrink-0 lg:w-80">
-            <div className="border-border sticky top-24 space-y-4 rounded-sm border p-6">
+            <div className="bg-secondary/50 sticky top-24 space-y-4 p-6">
               <h2 className="font-heading text-foreground text-lg font-bold">
                 Récapitulatif
               </h2>

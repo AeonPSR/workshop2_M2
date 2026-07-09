@@ -1,5 +1,19 @@
 // Static configuration for the storefront.
 
+export const STORE = {
+  street: "12 rue des Artisans",
+  postalCode: "42610",
+  city: "Saint-Romain-le-Puy",
+  address: "12 rue des Artisans, 42610 Saint-Romain-le-Puy",
+  phone: "01 23 45 67 89",
+  email: "contact@pap.fr",
+  // Retrait en magasin possible uniquement ces jours (0 = dimanche).
+  pickupWeekdays: [1, 2],
+};
+
+// Forfait de livraison particulier/visiteur — offert pour les pros.
+export const DELIVERY_FEE = 5.9;
+
 export const IMAGES = {
   hero: "https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1200&auto=format&fit=crop",
   landscape: "https://images.unsplash.com/photo-1500534623283-312aade485b7?q=80&w=1200&auto=format&fit=crop",

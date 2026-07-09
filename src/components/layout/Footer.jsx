@@ -11,6 +11,7 @@ import {
   Location01Icon,
 } from "@hugeicons/core-free-icons";
 import { cn } from "@/lib/utils";
+import { STORE } from "@/lib/constants";
 
 const navigationItems = [
   { label: "Accueil", href: "/" },
@@ -77,15 +78,15 @@ export const Footer = () => {
                 absoluteStrokeWidth
                 className="mt-0.5 shrink-0"
               />
-              12 rue des Artisans, 75011 Paris
+              {STORE.address}
             </li>
             <li className="flex items-center gap-2 text-sm">
               <HugeiconsIcon icon={Call02Icon} size={18} absoluteStrokeWidth />
-              01 23 45 67 89
+              {STORE.phone}
             </li>
             <li className="flex items-center gap-2 text-sm">
               <HugeiconsIcon icon={Mail01Icon} size={18} absoluteStrokeWidth />
-              contact@pap.fr
+              {STORE.email}
             </li>
           </ul>
         </div>

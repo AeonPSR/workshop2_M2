@@ -38,8 +38,8 @@ export default async function RootLayout({ children }) {
           initialName={session?.name ?? null}
           initialPricelistId={session?.pricelistId ?? null}
         >
-          <Header />
           <AppProvider>
+            <Header />
             <main className="min-h-screen">{children}</main>
           </AppProvider>
         </ProProvider>

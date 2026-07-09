@@ -7,8 +7,17 @@ import {
   getCategories,
   getFeaturedProducers,
 } from "@/lib/api/products";
+import {
+  getPrice as getPriceFor,
+  addItem,
+  removeItem,
+  setItemQty,
+  revalidateCart,
+  cartCount as countCartItems,
+} from "@/lib/cart";
 
 const AppContext = createContext(null);
+const CART_STORAGE_KEY = "pap-cart";
 
 export function AppProvider({ children }) {
   // Source of truth for B2B/B2C is the header-controlled pro-context.
@@ -19,7 +28,33 @@ export function AppProvider({ children }) {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // Cart entries: { id: productId, qty: number }
   const [cart, setCart] = useState([]);
+
+  // Load persisted cart once on mount (after hydration, to avoid SSR mismatch).
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(CART_STORAGE_KEY);
+      if (raw) setCart(JSON.parse(raw));
+    } catch {
+      // Ignore malformed/inaccessible storage.
+    }
+  }, []);
+
+  // Persist cart on every change.
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    } catch {
+      // Ignore write failures (e.g. storage disabled).
+    }
+  }, [cart]);
+
+  // Revalidate cart against current stock whenever products refresh —
+  // clamp quantities to available stock and drop lines that sold out.
+  useEffect(() => {
+    setCart((current) => revalidateCart(current, products));
+  }, [products]);
 
   useEffect(() => {
     let active = true;
@@ -47,15 +82,23 @@ export function AppProvider({ children }) {
     };
   }, [pricelistId]);
 
-  const getPrice = (product) =>
-    isPro
-      ? (product.price_pro ?? product.price_particulier)
-      : product.price_particulier;
+  const getPrice = (product) => getPriceFor(product, isPro);
 
-  const addToCart = (productId) => {
-    // TODO: wire to real cart/Odoo order logic.
-    setCart((current) => [...current, productId]);
+  const addToCart = (productId, qty = 1) => {
+    setCart((current) => addItem(current, products, productId, qty));
   };
+
+  const removeFromCart = (productId) => {
+    setCart((current) => removeItem(current, productId));
+  };
+
+  const setCartQty = (productId, qty) => {
+    setCart((current) => setItemQty(current, products, productId, qty));
+  };
+
+  const clearCart = () => setCart([]);
+
+  const cartCount = countCartItems(cart);
 
   const value = {
     products,
@@ -63,10 +106,14 @@ export function AppProvider({ children }) {
     categories,
     isPro,
     cart,
+    cartCount,
     loading,
     error,
     getPrice,
     addToCart,
+    removeFromCart,
+    setCartQty,
+    clearCart,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

@@ -91,7 +91,7 @@ export const ProductCard = ({ product }) => {
         onClick={() => addToCart(product.id)}
         disabled={outOfStock}
         className={cn(
-          "text-2xs tracking-wide-luxe ink-hover relative mt-3 w-full border py-2.5 uppercase transition-all md:text-xs",
+          "text-2xs tracking-wide-luxe ink-hover relative mt-3 w-full cursor-pointer border py-2.5 uppercase transition-all md:text-xs",
           outOfStock
             ? "border-border text-muted-foreground cursor-not-allowed opacity-50"
             : "border-foreground text-foreground hover:bg-foreground hover:text-background",

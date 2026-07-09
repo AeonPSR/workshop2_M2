@@ -10,6 +10,7 @@ import { MobileMenu } from "./MobileMenu";
 import { ShoppingBasket03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { cn } from "@/lib/utils";
+import { useApp } from "@/context/AppContext";
 
 const menuItems = [
   { label: "Accueil", href: "/" },
@@ -21,6 +22,7 @@ const menuItems = [
 
 export const Header = () => {
   const pathname = usePathname();
+  const { cartCount } = useApp();
 
   return (
     <>
@@ -70,9 +72,14 @@ export const Header = () => {
           <div className="flex space-x-2">
             <Link
               href="/cart"
-              className="flex items-center gap-1 text-sm text-foreground transition hover:text-accent"
+              className="relative flex items-center gap-1 text-sm text-foreground transition hover:text-accent"
             >
               <HugeiconsIcon icon={ShoppingBasket03Icon} />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-background">
+                  {cartCount}
+                </span>
+              )}
             </Link>
             <MobileMenu />
           </div>

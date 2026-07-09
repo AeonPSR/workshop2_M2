@@ -39,10 +39,10 @@ export const Header = () => {
             </div>
             <div className="hidden sm:block">
               <div className="font-heading text-foreground text-lg leading-none font-bold">
-                Plateforme
+                Comptoir
               </div>
               <div className="text-2xs tracking-wide-luxe text-muted-foreground mt-0.5 uppercase">
-                Artisans Producteurs
+                artisan
               </div>
             </div>
           </Link>

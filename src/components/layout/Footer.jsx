@@ -92,10 +92,7 @@ export const Footer = () => {
         </div>
       </div>
       <div className="border-background/10 text-background/50 mx-auto mt-16 flex max-w-7xl flex-col items-center justify-between gap-4 border-t pt-8 text-center text-xs md:mt-20 md:flex-row">
-        <p>
-          © 2026 PAP — Plateforme des Artisans Producteurs. Tous droits
-          réservés.
-        </p>
+        <p>© 2026 Comptoir artisan. Tous droits réservés.</p>
         <ul className="flex flex-wrap items-center justify-center gap-4">
           <li>
             <Link

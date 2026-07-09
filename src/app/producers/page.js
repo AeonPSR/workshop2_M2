@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import ProducerCard from "@/components/producers/ProducerCard";
 import SectionHeading from "@/components/shared/SectionHeading";
 import { getProducers } from "@/lib/api/producers";
@@ -75,9 +76,11 @@ export default function Producers() {
         <hr className="border-accent/30" />
         <div className="flex flex-col items-center gap-4 text-center lg:gap-2">
           <h2>Envie de découvrir leurs produits ?</h2>
-          <Button variant="default">
-            Parcourir le catalogue <HugeiconsIcon icon={ArrowRight02Icon} />
-          </Button>
+          <Link href="/catalogue">
+            <Button variant="default">
+              Parcourir le catalogue <HugeiconsIcon icon={ArrowRight02Icon} />
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

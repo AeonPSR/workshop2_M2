@@ -1,8 +1,6 @@
 
 export default function ProducerCard({ producer }) {
 
-  console.log("dsecription", producer.description)
-
   return (
     <div className="flex flex-col gap-4 items-center lg:w-96 w-80">
       <div className="relative overflow-hidden rounded-lg aspect-4/5 w-full">

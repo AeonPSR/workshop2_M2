@@ -297,11 +297,12 @@ export default function Home() {
               de la passion du terroir
             </h2>
             <p className="text-background/60 mb-6 leading-relaxed">
-              PAP est née d’une conviction simple : les meilleurs produits
-              méritent les meilleurs circuits de distribution. Nous travaillons
-              main dans la main avec des artisans producteurs d’exception pour
-              porter leurs créations jusqu’aux enseignes et particuliers les
-              plus exigeants.
+              <span className="text-accent italic">Comptoir artisan</span>
+              est né d'une conviction simple : les meilleurs produits méritent
+              les meilleurs circuits de distribution. Nous travaillons main dans
+              la main avec des artisans producteurs d'exception pour porter
+              leurs créations jusqu'aux enseignes et particuliers les plus
+              exigeants.
             </p>
             <Link
               href="/contact"

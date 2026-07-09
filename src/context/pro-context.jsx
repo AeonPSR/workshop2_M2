@@ -2,22 +2,18 @@
 
 import * as React from "react";
 
-const STORAGE_KEY = "isPro";
-
 const ProContext = React.createContext(undefined);
 
-export function ProProvider({ children }) {
-  const [isPro, setIsPro] = React.useState(false);
-
-  React.useEffect(() => {
-    setIsPro(window.localStorage.getItem(STORAGE_KEY) === "true");
-  }, []);
-
-  React.useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, String(isPro));
-  }, [isPro]);
-
-  const value = React.useMemo(() => ({ isPro, setIsPro }), [isPro]);
+export function ProProvider({
+  children,
+  initialIsPro = false,
+  initialName = null,
+  initialPricelistId = null,
+}) {
+  const value = React.useMemo(
+    () => ({ isPro: initialIsPro, name: initialName, pricelistId: initialPricelistId }),
+    [initialIsPro, initialName, initialPricelistId],
+  );
 
   return <ProContext.Provider value={value}>{children}</ProContext.Provider>;
 }

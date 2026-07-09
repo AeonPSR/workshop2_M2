@@ -42,6 +42,9 @@ next-env.d.ts
 
 dummy/
 
+# route de dev locale pour tester les comptes pro (is_company), à ne jamais committer
+/src/app/api/dev/
+
 # cypress
 cypress/videos/
 cypress/screenshots/

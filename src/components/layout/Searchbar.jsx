@@ -92,7 +92,7 @@ export const Searchbar = () => {
               {results.map((product) => (
                 <Link
                   key={product.id}
-                  href={`/product/${product.id}`}
+                  href={`/catalogue/${product.id}`}
                   onClick={closeAndReset}
                   className="flex items-center gap-3 rounded-md p-1.5 hover:bg-accent/10"
                 >

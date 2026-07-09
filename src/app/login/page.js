@@ -60,12 +60,14 @@ export default function LoginPage() {
         </Button>
       </form>
 
-      <p className="text-muted-foreground mt-6 text-center text-sm">
-        Pas inscrit ?{" "}
-        <Link href="/signup" className="text-accent underline">
-          Créer mon compte
-        </Link>
-      </p>
+      {searchParams.get("type") !== "pro" && (
+        <p className="text-muted-foreground mt-6 text-center text-sm">
+          Pas inscrit ?{" "}
+          <Link href="/signup" className="text-accent underline">
+            Créer mon compte
+          </Link>
+        </p>
+      )}
     </div>
   );
 }

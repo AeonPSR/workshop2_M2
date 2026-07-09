@@ -90,3 +90,61 @@ export async function getFeaturedProducers() {
     image_url: imageUrl("res.partner", p.id),
   }));
 }
+
+
+export async function getProductById(productId, pricelistId) {
+  try {
+    const odoo = await getConnectedOdooClient();
+
+    const products = await odoo.execute_kw("product.template", "search_read", [
+      [
+        ["id", "=", parseInt(productId)],
+        ["sale_ok", "=", true],
+      ],
+      ["id", "name", "list_price", "categ_id", "qty_available", "image_512"],
+    ]);
+
+    if (!products || products.length === 0) {
+      return null;
+    }
+
+    const p = products[0];
+
+    let proPriceValue = p.list_price;
+
+    if (pricelistId) {
+      const rules = await odoo.execute_kw("product.pricelist.item", "search_read", [
+        [
+          ["pricelist_id", "=", pricelistId],
+          ["applied_on", "=", "1_product"],
+          ["compute_price", "=", "fixed"],
+          ["product_tmpl_id", "=", p.id],
+        ],
+        ["fixed_price"],
+      ]);
+
+      if (rules && rules.length > 0) {
+        proPriceValue = rules[0].fixed_price;
+      }
+    }
+    const categoryName = Array.isArray(p.categ_id) ? p.categ_id[1] : "Non classé";
+
+    const imageUrl = p.image_512
+      ? `data:image/png;base64,${p.image_512}`
+      : null;
+
+    return {
+      category: categoryName,
+      id: p.id,
+      image_url: imageUrl,
+      name: p.name,
+      price_particulier: p.list_price,
+      price_pro: proPriceValue,
+      stock: p.qty_available || 0
+    };
+
+  } catch (error) {
+    console.error(`Erreur lors de la récupération du produit ${productId}:`, error.message);
+    throw error;
+  }
+}

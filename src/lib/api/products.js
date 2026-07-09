@@ -2,6 +2,12 @@
 
 import { getConnectedOdooClient } from "./odoo-client";
 import { sortByAvailability } from "@/lib/product-utils";
+import {
+  buildProPriceMap,
+  isRealCategory,
+  mapProduct,
+  toRayonNames,
+} from "@/lib/odoo-mapping";
 
 const ODOO_URL = process.env.NEXT_PUBLIC_ODOO_URL;
 
@@ -10,17 +16,6 @@ const ODOO_URL = process.env.NEXT_PUBLIC_ODOO_URL;
 // TODO: when auth is wired, resolve the real pricelist from the logged-in
 // partner's `property_product_pricelist` instead of this fixed id.
 const B2B_PRICELIST_ID = 5; // "Revendeurs"
-
-// Odoo product categories that are internal/accounting, not real rayons.
-const INTERNAL_CATEGORIES = new Set([
-  "Goods",
-  "Services",
-  "Expenses",
-  "Deliveries",
-  "Food",
-  "All",
-  "Saleable",
-]);
 
 function imageUrl(model, id) {
   if (model === "product.template") {
@@ -59,23 +54,10 @@ export async function getProducts() {
     0,
     1000,
   ]);
-  const proPrice = {};
-  for (const r of rules) {
-    if (r.product_tmpl_id) proPrice[r.product_tmpl_id[0]] = r.fixed_price;
-  }
+  const proPrice = buildProPriceMap(rules);
 
   return sortByAvailability(
-    products
-      .filter((p) => !p.categ_id || !INTERNAL_CATEGORIES.has(p.categ_id[1]))
-      .map((p) => ({
-        id: p.id,
-        name: p.name,
-        category: p.categ_id ? p.categ_id[1] : null,
-        image_url: p.image_512 ? `/api/product-image/${p.id}` : null,
-        price_particulier: p.list_price,
-        price_pro: proPrice[p.id] ?? p.list_price,
-        stock: p.qty_available,
-      })),
+    products.filter(isRealCategory).map((p) => mapProduct(p, proPrice)),
   );
 }
 
@@ -88,11 +70,7 @@ export async function getCategories() {
     0,
     100,
   ]);
-  return [
-    ...new Set(
-      cats.map((c) => c.name).filter((n) => !INTERNAL_CATEGORIES.has(n)),
-    ),
-  ];
+  return toRayonNames(cats);
 }
 
 /** Live producers for the homepage preview (`res.partner` companies). */
